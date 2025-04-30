@@ -1,0 +1,57 @@
+/*
+  Most gRPC apps starts by defining the proto file(s) as it provides the common interface both server and clients will be using to communicate with each other.
+*/ 
+
+syntax = "proto3";
+package grpc_tutorial;
+
+option go_package = "./grpc_tutorial";
+
+/*
+Service: 
+  Defines a set of methods that can be called remotely. Think of it as an API contract between the client and server. In gRPC, a service specifies the methods that can be called remotely with their parameters and return types.
+*/
+service Blog {
+/*
+  RPC (Remote Procedure Call):
+  Defines a single method within a service. Each RPC specifies:
+    - Method name
+   - Input message (parameters)
+   - Output message (return type)
+  RPCs allow clients to call server methods as if they were local functions.
+*/
+  rpc GetPosts(GetPostsRequest) returns (Posts);
+  rpc CreatePost(CreatePostRequest) returns (Post);
+}
+
+/*
+  Message:
+ Defines the structure of the data being sent. Messages are like structs or classes in programming languages. They specify:
+  - Field names
+  - Field types
+  - Field numbers (unique identifiers used in the binary encoding)
+  Messages are used as input and output types for RPCs.
+*/
+message Post {
+  string Title = 1;
+  string Content = 2;
+  string CreatedAt = 3;
+  string Author = 4;
+  int64 ViewCount = 5;
+  string LastViewed = 6;
+}
+
+message Posts {
+  // This means an array of posts.
+  // It's common to nest message definitions within each other. Basically, every time we have nested object within a payload this one should be extracted into it's own message definition.
+  repeated Post posts = 1;
+}
+
+message GetPostsRequest {}
+
+message CreatePostRequest {
+  string Title = 1;
+  string Content = 2;
+  string CreatedAt = 3;
+  string Author = 4;
+}

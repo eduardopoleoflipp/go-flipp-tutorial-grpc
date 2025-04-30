@@ -1,0 +1,56 @@
+[
+  {
+    "Title": "Small Post",
+    "Content": "A post about birds",
+    "Author": "John McWilly",
+    "ViewCount": 4,
+    "LastViewed": "2025-06-04"
+  },
+  {
+    "Title": "Long Post",
+    "Content": "A post about cars",
+    "Author": "Jane McFarland",
+    "ViewCount": 4,
+    "LastViewed": "2025-06-04"
+  },
+  {
+    "Title": "My very first gRPC Post",
+    "Content": "This is  test post with gRPC",
+    "CreatedAt": "2025-06-03",
+    "Author": "gRPC client",
+    "ViewCount": 4,
+    "LastViewed": "2025-06-04"
+  },
+  {
+    "Title": "My very first gRPC Post",
+    "Content": "This is  test post with gRPC",
+    "CreatedAt": "2025-06-03",
+    "Author": "gRPC client",
+    "ViewCount": 3,
+    "LastViewed": "2025-06-04"
+  },
+  {
+    "Title": "My very first gRPC Post",
+    "Content": "This is  test post with gRPC",
+    "CreatedAt": "2025-06-03",
+    "Author": "gRPC client",
+    "ViewCount": 2,
+    "LastViewed": "2025-06-04"
+  },
+  {
+    "Title": "My very first gRPC Post",
+    "Content": "This is  test post with gRPC",
+    "CreatedAt": "2025-06-03",
+    "Author": "gRPC client",
+    "ViewCount": 2,
+    "LastViewed": "2025-06-04"
+  },
+  {
+    "Title": "My very first gRPC Post",
+    "Content": "This is  test post with gRPC",
+    "CreatedAt": "2025-06-04",
+    "Author": "gRPC client",
+    "ViewCount": 1,
+    "LastViewed": "2025-06-04"
+  }
+]
