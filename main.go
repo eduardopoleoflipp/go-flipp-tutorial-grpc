@@ -20,36 +20,36 @@ import (
 )
 
 /*
-TYPE EMBEDDING and UnimplementedBlogServer
+  TYPE EMBEDDING and UnimplementedBlogServer
 
-In go we can embed a type into another like this
+  In go we can embed a type into another like this
 
-type server struct {
-  pb.UnimplementedBlogServer
-}
-
-In this case, all the functions implemented by the UnimplementedBlogServer are automatically promoted to the server struct. If you inspect the gen/blog_grpc.pb.go file you'll find code that looks like this:
-
-<-- START CODE BLOCK -->
-  type BlogServer interface {
-    GetPosts(context.Context, *GetPostsRequest) (*Posts, error)
-    CreatePost(context.Context, *CreatePostRequest) (*Post, error)
-    mustEmbedUnimplementedBlogServer()
+  type server struct {
+    pb.UnimplementedBlogServer
   }
-  type UnimplementedBlogServer struct{}
 
-  func (UnimplementedBlogServer) GetPosts(context.Context, *GetPostsRequest) (*Posts, error) {
-    return nil, status.Errorf(codes.Unimplemented, "method GetPosts not implemented")
-  }
-  func (UnimplementedBlogServer) CreatePost(context.Context, *CreatePostRequest) (*Post, error) {
-    return nil, status.Errorf(codes.Unimplemented, "method CreatePost not implemented")
-  }
-  func (UnimplementedBlogServer) mustEmbedUnimplementedBlogServer() {}
-<-- END CODE BLOCK -->
+  In this case, all the functions implemented by the UnimplementedBlogServer are automatically promoted to the server struct. If you inspect the gen/blog_grpc.pb.go file you'll find code that looks like this:
 
-As we can see from above the UnimplementedBlogServer has a default implementation for all the grpc calls defined in the protos, that is GetPosts and CreatePost, this is relevant because:
-  - It makes the server forward compatible since we'll always have implementations for the methods defined in the proto file. If a client calls any of these methods, we'll raise a "not implemented" error.
-  - By embedding the UnimplementedBlogServer, our server now complies with the BlogServer interface. As we'll see later in the main function, we need to register our server with pb.RegisterBlogServer(grpcServer, &server{}) and the second argument requires the server to implement the BlogServer interface.
+  <-- START CODE BLOCK -->
+    type BlogServer interface {
+      GetPosts(context.Context, *GetPostsRequest) (*Posts, error)
+      CreatePost(context.Context, *CreatePostRequest) (*Post, error)
+      mustEmbedUnimplementedBlogServer()
+    }
+    type UnimplementedBlogServer struct{}
+
+    func (UnimplementedBlogServer) GetPosts(context.Context, *GetPostsRequest) (*Posts, error) {
+      return nil, status.Errorf(codes.Unimplemented, "method GetPosts not implemented")
+    }
+    func (UnimplementedBlogServer) CreatePost(context.Context, *CreatePostRequest) (*Post, error) {
+      return nil, status.Errorf(codes.Unimplemented, "method CreatePost not implemented")
+    }
+    func (UnimplementedBlogServer) mustEmbedUnimplementedBlogServer() {}
+  <-- END CODE BLOCK -->
+
+  As we can see from above the UnimplementedBlogServer has a default implementation for all the grpc calls defined in the protos, that is GetPosts and CreatePost, this is relevant because:
+    - It makes the server forward compatible since we'll always have implementations for the methods defined in the proto file. If a client calls any of these methods, we'll raise a "not implemented" error.
+    - By embedding the UnimplementedBlogServer, our server now complies with the BlogServer interface. As we'll see later in the main function, we need to register our server with pb.RegisterBlogServer(grpcServer, &server{}) and the second argument requires the server to implement the BlogServer interface.
 */
 
 type server struct {
@@ -57,12 +57,12 @@ type server struct {
 }
 
 /*
-INTERFACES IN GO
+  INTERFACES IN GO
 
-We briefly touched on interfaces above so it's good time to expand on the concept now. Interfaces in Go provide a way to specify the behavior of an object: if something can do this, then it can be used here. They define a contract of methods that a type must implement.
+  We briefly touched on interfaces above so it's good time to expand on the concept now. Interfaces in Go provide a way to specify the behavior of an object: if something can do this, then it can be used here. They define a contract of methods that a type must implement.
 
-A generic example:
-<-- START CODE BLOCK -->
+  A generic example:
+  <-- START CODE BLOCK -->
     type Logger interface {
         Log(message string)
     }
@@ -87,11 +87,11 @@ A generic example:
     func DoSomething(l Logger) {
         l.Log("Operation completed")
     }
-<-- END CODE BLOCK -->
+  <-- END CODE BLOCK -->
 
-Both FileLogger and ConsoleLogger implement the Log method thus they both comply with the Logger interface. And because of that they both can be passed into the DoSomething method. Additionally, this allows for a form of duck-typing without the need of having inheritance.
+  Both FileLogger and ConsoleLogger implement the Log method thus they both comply with the Logger interface. And because of that they both can be passed into the DoSomething method. Additionally, this allows for a form of duck-typing without the need of having inheritance.
 
-In our gRPC server, we use interfaces to define the contract that our server must implement, allowing different implementations while maintaining compatibility with the gRPC framework.
+  In our gRPC server, we use interfaces to define the contract that our server must implement, allowing different implementations while maintaining compatibility with the gRPC framework.
 */
 
 var (
@@ -99,20 +99,20 @@ var (
 )
 
 /*
-As explained above now our server needs to override the GetPosts method to comply with the BlogServer interface. Notice how the function signature exactly matches the UnimplementedBlogServer including the arguments and return types.
+  As explained above now our server needs to override the GetPosts method to comply with the BlogServer interface. Notice how the function signature exactly matches the UnimplementedBlogServer including the arguments and return types.
 */
 func (s *server) GetPosts(context.Context, *pb.GetPostsRequest) (*pb.Posts, error) {
   /*
-   We need to leverage the types that protobuf generated for us. In this case we want to use Posts defined in the blog.pb.go
+    We need to leverage the types that protobuf generated for us. In this case we want to use Posts defined in the blog.pb.go
 
-   type Posts struct {
-     state         protoimpl.MessageState `protogen:"open.v1"`
-     Posts         []*Post                `protobuf:"bytes,1,rep,name=posts,proto3" json:"posts,omitempty"`
-     unknownFields protoimpl.UnknownFields
-     sizeCache     protoimpl.SizeCache
-   }
+    type Posts struct {
+      state         protoimpl.MessageState `protogen:"open.v1"`
+      Posts         []*Post                `protobuf:"bytes,1,rep,name=posts,proto3" json:"posts,omitempty"`
+      unknownFields protoimpl.UnknownFields
+      sizeCache     protoimpl.SizeCache
+    }
 
-   We can see how the actual collection of post resize within the Posts property
+    We can see how the actual collection of post resize within the Posts property
   */
 
   posts := &pb.Posts{
@@ -121,7 +121,7 @@ func (s *server) GetPosts(context.Context, *pb.GetPostsRequest) (*pb.Posts, erro
   }
 
   /*
-     Notice that error handling is different than in the web version. Here we just return an error as opposed to having to write the error using the http writer.
+   Notice that error handling is different than in the web version. Here we just return an error as opposed to having to write the error using the http writer.
   */
   if err := loadPost(posts); err != nil {
     return nil, err
@@ -219,7 +219,7 @@ func main() {
 
     func RegisterBlogServer(s grpc.ServiceRegistrar, srv BlogServer) {
       if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
-        t.testEmbeddedByValue()
+      t.testEmbeddedByValue()
       }
       s.RegisterService(&Blog_ServiceDesc, srv)
     }

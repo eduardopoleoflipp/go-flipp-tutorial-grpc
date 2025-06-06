@@ -8,8 +8,8 @@ package grpc_tutorial;
 option go_package = "./grpc_tutorial";
 
 /*
-Service: 
-  Defines a set of methods that can be called remotely. Think of it as an API contract between the client and server. In gRPC, a service specifies the methods that can be called remotely with their parameters and return types.
+  Service: 
+    Defines a set of methods that can be called remotely. Think of it as an API contract between the client and server. In gRPC, a service specifies the methods that can be called remotely with their parameters and return types.
 */
 service Blog {
 /*
@@ -26,10 +26,10 @@ service Blog {
 
 /*
   Message:
- Defines the structure of the data being sent. Messages are like structs or classes in programming languages. They specify:
-  - Field names
-  - Field types
-  - Field numbers (unique identifiers used in the binary encoding)
+  Defines the structure of the data being sent. Messages are like structs or classes in programming languages. They specify:
+    - Field names
+    - Field types
+    - Field numbers (unique identifiers used in the binary encoding)
   Messages are used as input and output types for RPCs.
 */
 message Post {

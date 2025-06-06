@@ -17,9 +17,9 @@ import (
 
 func main() {
   /*
-   We create a new connection and bind it to localhost:3000 (the same port used on the server side).
+    We create a new connection and bind it to localhost:3000 (the same port used on the server side).
 
-   WithTransportCredentials configures the security settings for the gRPC connection:
+    WithTransportCredentials configures the security settings for the gRPC connection:
     - insecure.NewCredentials() creates an insecure channel (no SSL/TLS)
     - Only suitable for development/testing
     - For production, use proper TLS credentials:
@@ -39,27 +39,27 @@ func main() {
   c := pb.NewBlogClient(conn)
 
   /*
-   CONTEXT IN GO
+    CONTEXT IN GO
 
-   Context provides a way to carry deadlines, cancellation signals, and request-scoped values across API boundaries. In this client:
+    Context provides a way to carry deadlines, cancellation signals, and request-scoped values across API boundaries. In this client:
 
-   1. Creation and Timeout:
-     This creates a context with 1 second timeout. The context countdown starts as soon as the context gets created.
-     ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-     defer cancel()  // Always call cancel to prevent resource leaks
+    1. Creation and Timeout:
+      This creates a context with 1 second timeout. The context countdown starts as soon as the context gets created.
+      ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+      defer cancel()  // Always call cancel to prevent resource leaks
 
-   2. Usage:
-     Functions thats use this context will only run for the time remaining in the context.
-     - For example, if CreatePost takes 0.7s, GetPosts only has 0.3s remaining (assuming no meaningful amount of time has been spent on the main function)
-     - When context expires, the operation that is using the context is cancelled and an error is returned
+    2. Usage:
+      Functions thats use this context will only run for the time remaining in the context.
+      - For example, if CreatePost takes 0.7s, GetPosts only has 0.3s remaining (assuming no meaningful amount of time has been spent on the main function)
+      - When context expires, the operation that is using the context is cancelled and an error is returned
 
-   3. Best Practices:
-     - Create separate contexts for independent operations
-     - Pass context as first parameter to functions
-     - Don't store context in structs
-     - Use for request-scoped data only
+    3. Best Practices:
+      - Create separate contexts for independent operations
+      - Pass context as first parameter to functions
+      - Don't store context in structs
+      - Use for request-scoped data only
 
-   Context is not specific to gRPC - it's a standard Go feature used across the ecosystem for managing timeouts, cancellation, and request-scoped values in APIs, database calls, HTTP requests, and more.
+    Context is not specific to gRPC - it's a standard Go feature used across the ecosystem for managing timeouts, cancellation, and request-scoped values in APIs, database calls, HTTP requests, and more.
   */
   ctx, cancel := context.WithTimeout(context.Background(), time.Second)
   defer cancel()
@@ -76,10 +76,10 @@ func main() {
 
   if err != nil {
     /*
-     log.Fatalf:
-     - The message is logged
-     - Deferred functions are executed
-     - Then os.Exit(1) is called
+      log.Fatalf:
+        - The message is logged
+        - Deferred functions are executed
+        - Then os.Exit(1) is called
     */
     log.Fatalf("could not create post: %v", err)
   }
